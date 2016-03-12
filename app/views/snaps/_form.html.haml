@@ -1,0 +1,12 @@
+- if @snap.errors.full_messages.any?
+  - @snap.errors.full_messages.each do |msg|
+    .error=msg
+
+.form-wrapper
+  = simple_form_for @snap, html: {class: "form-horizontal", multipart: true} do |f|
+    .form-group
+      = f.file_field :image
+    .form-group.text-center
+      = f.input :caption
+    .form-group.text-center
+      = f.button :submit, class: 'btn-success'

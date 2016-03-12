@@ -1,0 +1,6 @@
+= render 'snap', snap: @snap
+.text-center.edit-links
+  = link_to 'Cancel', snaps_path
+  - if @snap.user_id == current_user.id
+    |
+    = link_to "Edit", edit_snap_path(@snap)

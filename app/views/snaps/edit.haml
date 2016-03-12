@@ -1,0 +1,6 @@
+.text-center
+  = image_tag @snap.image.url(:medium)
+  =render "form"
+  = link_to "Delete", snap_path(@snap), method: :delete
+  | 
+  = link_to 'Cancel', snaps_path
