@@ -18,6 +18,10 @@ class User < ActiveRecord::Base
   end
 
   def unread_notifications
-    notifications.select{|n| n.unread?}
+    notifications.where(read: false)
+  end
+
+  def recent_unread_notifications
+    notifications.where(read: false).order(created_at: :desc).last(5)
   end
 end

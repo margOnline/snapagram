@@ -4,5 +4,7 @@
     %span(class="glyphicon glyphicon-flag")
   %ul.dropdown-menu{'aria-labelledby' => 'dropdownMenu1'}
     %li.dropdown-header.text-center Notifications
-    - user.unread_notifications.each do |n|
+    - user.recent_unread_notifications.each do |n|
       = render 'notifications/notification', notification: n
+    %li.divider{role: 'separator'}
+      %li.text-center= link_to 'View All', notifications_path

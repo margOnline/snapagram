@@ -15,4 +15,8 @@ module ApplicationHelper
     image_tag 'placeholder.png', id: 'image-preview', class: 'img-responsive'
   end
 
+  def read_class(n)
+    n.read? ? "read" : ""
+  end
+
 end
