@@ -1,12 +1,17 @@
-- if @snap.errors.full_messages.any?
-  - @snap.errors.full_messages.each do |msg|
-    .error=msg
-
-.form-wrapper
-  = simple_form_for @snap, html: {class: "form-horizontal", multipart: true} do |f|
-    .form-group
-      = f.file_field :image
-    .form-group.text-center
-      = f.input :caption
-    .form-group.text-center
-      = f.button :submit, class: 'btn-success'
+.snaps-wrapper
+  .snap
+    .snap-body
+      .image-wrap
+        = form_image_select(@snap)
+        = simple_form_for @snap, html: { multipart: true} do |f|
+          .row
+            .col-md-12.text-center
+              = f.error_notification
+          .container-fluid
+            .form-group.text-center
+              %h4 Upload an image
+              = f.input :image, label: false, input_html: { onChange: 'loadFile(event)'}
+            .form-group.text-center
+              = f.input :caption, label: false, placeholder: 'Add a caption'
+            .form-group.text-center
+              = f.button :submit, class: 'btn-success btn-block'

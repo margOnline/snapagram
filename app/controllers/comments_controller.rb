@@ -5,8 +5,11 @@ class CommentsController < ApplicationController
     @comment = @snap.comments.build(comment_params)
     @comment.user_id = current_user.id
     if @comment.save
-      flash[:success] = "Thanks for your comment"
-      redirect_to :back
+      create_notification @snap
+      respond_to do |format|
+        format.html { redirect_to :back }
+        format.js
+      end  
     else
       flash[:alert] = "Hmm, comment refused"
       render root_path
@@ -15,9 +18,12 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = @snap.comments.find(params[:id])
-    @comment.destroy
-    flash[:success] = "Comment deleted :("
-    redirect_to root_path
+    if @comment.destroy
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.js
+      end
+    end
   end
 
   private
@@ -27,5 +33,18 @@ class CommentsController < ApplicationController
 
   def set_snap
     @snap = Snap.find(params[:snap_id])
+  end
+
+  def create_notification(snap)
+    return if snap.user.id == current_user.id
+    puts "here"
+    n=Notification.create(
+      user_id: snap.user.id,
+      snap_id: snap.id,
+      notified_by_id: current_user.id,
+      notice_type: 'comment',
+      read: false
+    )
+    puts "\n\n#{n.errors.full_messages}\n\n"
   end
 end

@@ -1,0 +1,2 @@
+$('#comments_<%= @snap.id %>').append("<%= j render 'comments/comment', snap: @snap, comment: @comment %>");
+$('#comment_content_<%= @snap.id %>').val('');

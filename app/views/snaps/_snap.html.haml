@@ -3,27 +3,23 @@
     .snap-head
       .thumb-img
       .user-name=snap.user.username
+      .time-ago
+        ="#{time_ago_in_words snap.created_at} ago"
     .image.center-block
       =link_to image_tag(snap.image.url(:medium), class: 'img-responsive'), snap_path(snap)
     .snap-bottom
       .caption
-        .user-name
-          = snap.user.username
-        =snap.caption
-      - if snap.comments
-        - snap.comments.each do |comment|
-          .comment
-            .user-name
-              = comment.user.username
-            .comment-content
-              = comment.content
-            - if comment.user == current_user
-              = link_to snap_comment_path(snap, comment), method: :delete, data: { confirm: "Are you sure?"} do
-                %span(class="blyphicon glyphicon-remove delete-comment")
+        .caption-content=snap.caption
+        .comments{id: "comments_#{snap.id}"}
+        - if snap.comments
+          - snap.comments.each do |comment|
+            = render snap.comments, snap: snap, comment: comment
 
-      .comment-like-form.row
-        .like-button.col-sm-1
-          %span(class="glyphicon glyphicon-hear-empty")
-        .comment-form.co-sm-11
-          = form_for [snap, snap.comments.new] do |f|
-            = f.text_field :content, placeholder: "Add a comment ..."
+    .comment-like-form.row
+      .col-sm-1
+        = link_to '', like_snap_path(snap.id), remote: true, id: "like_#{snap.id}", class: "glyphicon glyphicon-#{liked_snap(snap)}"
+        %span.likes-count
+          = snap.get_likes.count
+      .comment-form.co-sm-11
+        = form_for [snap, snap.comments.build], remote: true do |f|
+          = f.text_field :content, placeholder: "Add a comment ...", class: "comment_content", id: "comment_content_#{snap.id}"

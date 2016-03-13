@@ -6,6 +6,13 @@ class User < ActiveRecord::Base
 
   has_many :snaps, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
-  validates :username, presence: true, length: {miniumum: 4, maximum: 25}
+  validates :username, presence: true, length: {maximum: 25}
+
+  acts_as_voter
+
+  def has_unread_notifications?
+    notifications.any?{|n| n.unread?}
+  end
 end

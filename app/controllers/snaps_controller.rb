@@ -1,6 +1,6 @@
 class SnapsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_snap, only: [:show, :edit, :update, :destroy]
+  before_action :set_snap, only: [:show, :edit, :update, :destroy, :like]
   before_action :owned_snap, only: [:edit, :update, :destroy]
 
   def index
@@ -41,6 +41,20 @@ class SnapsController < ApplicationController
   def destroy
     @snap.destroy
     redirect_to root_path
+  end
+
+  def like
+    if current_user.voted_up_on? @snap
+      flash[:alert] = "You can only like a snap once."
+    elsif current_user == @snap.user
+      flash[:alert] = "You can't like your own snap. Harsh, I know."
+    else
+      @snap.liked_by(current_user)
+      respond_to do |format|
+        format.html { redirect_to :back }
+        format.js
+      end  
+    end
   end
 
   private
