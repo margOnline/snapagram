@@ -13,7 +13,7 @@
         .comments{id: "comments_#{snap.id}"}
         - if snap.comments
           - snap.comments.each do |comment|
-            = render snap.comments, snap: snap, comment: comment
+            = render "comments/comment", snap: snap, comment: comment
 
     .comment-like-form.row
       .col-sm-1

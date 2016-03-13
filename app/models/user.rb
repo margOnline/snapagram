@@ -13,6 +13,11 @@ class User < ActiveRecord::Base
   acts_as_voter
 
   def has_unread_notifications?
+    puts "\n\n#{notifications.inspect}\n\n"
     notifications.any?{|n| n.unread?}
+  end
+
+  def unread_notifications
+    notifications.select{|n| n.unread?}
   end
 end

@@ -1,0 +1,8 @@
+.dropdown.notification-dropdown
+  %button.btn.btn-default.dropdown-toggle{type: 'button', id: 'dropdownMenu1', data: {toggle: 'dropdown'}, 'aria-haspopup' => true, 'aria-expanded' => true }
+    = user.unread_notifications.count
+    %span(class="glyphicon glyphicon-flag")
+  %ul.dropdown-menu{'aria-labelledby' => 'dropdownMenu1'}
+    %li.dropdown-header.text-center Notifications
+    - user.unread_notifications.each do |n|
+      = render 'notifications/notification', notification: n
